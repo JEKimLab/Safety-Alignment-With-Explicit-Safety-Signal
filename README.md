@@ -1,4 +1,4 @@
-# SafeAlignment-Explicit-Safety-Signal
+# Safety-Alignment-Explicit-Safety-Signal
 Official implementation for "Safety Alignment Can Be Not Superficial With Explicit Safety Signals"
 
 Hi everyone,
