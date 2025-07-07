@@ -20,4 +20,4 @@ utility_evaluation/mt_bench/data/model_judgment
 
 src/llama_recipes/models/hf_gpt2/
 src/llama_recipes/models/hf_llama2/
-/home/jli265/workspace/llama-recipes/src/llama_recipes/models/hf_llama3/
+src/llama_recipes/models/hf_llama3/
