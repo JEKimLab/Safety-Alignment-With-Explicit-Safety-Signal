@@ -2,15 +2,15 @@
 
 ⚠️ Due to time constraints during my summer internship, the code is being organized and uploaded gradually, and will be fully available before the conference.
 
-## Requirement
+## Dependencies Requirement
 
 Please follow instructions in [REARME_base.md](https://github.com/JEKimLab/Safety-Alignment-With-Explicit-Safety-Signal/blob/main/README_base.md) to install dependencies. Please note this repo was build on the llama_recipes, which has change its name to [llama-cookbook](https://github.com/meta-llama/llama-cookbook)
 
-## Update
+## Update News
 
 - 2025-05-07 Intiate the repo
 
-## Instructions
+## Prepare Instructions
 
 > Transformers commit id: f51ac9e059a78049362803c1d606a2c6a8160ee4
 
@@ -60,4 +60,18 @@ Please follow instructions in [REARME_base.md](https://github.com/JEKimLab/Safet
         self.set_output_embeddings(new_lm_head)
     ```
 
-### 
+### Training Instruction
+
+> Please check the scripts folder (Updating)
+
+### Utility Evaluation Instruction
+
+> Please use [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) for utility evaluation, commit id `3823cfec41c016378acbcc8616dd1ac92c15edd4`
+
+> For perplexicy and mt-bench score, please check the scripts folder
+
+### Safety Evaluation Instruction
+
+> Please check the scripts folder (Updating)
+
+

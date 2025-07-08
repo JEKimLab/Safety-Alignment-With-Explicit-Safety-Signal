@@ -11,8 +11,11 @@ import random
 from torch.utils.data import Dataset
 from typing import List
 
+
 B_INST, E_INST = "[INST]", "[/INST]"
 B_SYS, E_SYS = "<<SYS>>\n", "\n<</SYS>>\n\n"
+# SYSTEM_PROMPT = "You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe. Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature. If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information."
+# SYSTEM_PROMPT = B_SYS + SYSTEM_PROMPT + E_SYS
 
 prompt_template = (
     B_SYS + "Below is an instruction that describes a task. " +
@@ -22,60 +25,59 @@ prompt_template = (
 
 class InstructionDataset(Dataset):
     def __init__(self, dataset_config, tokenizer, partition="train", max_tokens=2048):
-        # 存储数据
-        positive_parsed_data = []
-        negative_parsed_data = []
-        train_parsed_data = []
+        parsed_data = []
         test_parsed_data = []
+        
+        with open(f"{dataset_config.data_path}/{dataset_config.train_split}", 'r', encoding='utf-8') as f:
+            for line in f:
+                # Parse each line as a JSON object
+                obj = json.loads(line.strip())
+                conversations = obj.get("conversations", [])
+                source = obj.get("source", "")
+                
+                # Append the parsed conversation and source to the list
+                parsed_data.append({
+                    "conversations": conversations,
+                    "source": source,
+                    "label": 0 # safe query
+                })
 
-        # 读取 merged_dataset.jsonl
-        file_path = "/home/jli265/workspace/llama-recipes/misc/deepinception_special_dataset.jsonl"
+        alpaca_no_safety_datasets = json.load(open("src/llama_recipes/datasets/alpaca_data_no_safety.json"))
+        for sample in alpaca_no_safety_datasets:
+            if not sample["input"]: # to compatible with alert dataset, we exclude samples with input
+                if len(parsed_data) < 14763: # number of alert sft dataset
+                    parsed_data.append({
+                        "conversations": [sample["instruction"], sample["output"]],
+                        "source": "alpaca_data_no_safety",
+                        "label": 0 # safe query
+                    }) 
+                else:
+                    test_parsed_data.append({
+                        "conversations": [sample["instruction"], sample["output"]],
+                        "source": "alpaca_data_no_safety",
+                        "label": 0 # safe query
+                    })
 
-        with open(file_path, 'r', encoding='utf-8') as f:
+                if len(test_parsed_data) > int(len(alpaca_no_safety_datasets) / 20):
+                    break
+
+        num_negative_smaples = len(parsed_data)
+        print("Number of negative smaples:", num_negative_smaples)
+        with open("src/llama_recipes/datasets/alert_sft/alert_sft_chosen.jsonl", 'r', encoding='utf-8') as f:
             for line in f:
                 obj = json.loads(line.strip())
-                data_entry = {
-                    "conversations": [obj.get("query", ""), obj.get("response", "")],
-                    "source": obj.get("from", ""),
-                    "label": obj.get("label", 0)  # 取 label 字段
-                }
-                if obj.get("label", 0) == 1:  # 1 代表正样本, malicious
-                    positive_parsed_data.append(data_entry)
-                else:  # 0 代表负样本, benign
-                    negative_parsed_data.append(data_entry)
+                parsed_data.append({
+                    "conversations": [obj.get("prompt", ""),obj.get("response", "")],
+                    "source": obj.get("category", ""),
+                    "label": 1 # query with malicious intention
+                })
 
-        random.shuffle(positive_parsed_data)
-        random.shuffle(negative_parsed_data)
+        print("Number of positive smaples:", len(parsed_data) - num_negative_smaples)
+        print("Number of test smaples:", len(test_parsed_data))
 
-        # 计算 0.5% 的抽样数量
-        # pos_sample_size = max(1, int(len(positive_parsed_data) * 0.005))  # 至少抽 1 个
-        # neg_sample_size = max(1, int(len(negative_parsed_data) * 0.005))  # 至少抽 1 个
-
-        # 进行抽样
-        # test_positive_samples = random.sample(positive_parsed_data, pos_sample_size)
-        # test_negative_samples = random.sample(negative_parsed_data, neg_sample_size)
-
-        # 将抽取的样本加入测试集
-        # test_parsed_data.extend(test_positive_samples)
-        # test_parsed_data.extend(test_negative_samples)
-
-        # 从原数据集中移除测试样本，确保训练数据与测试数据不重叠
-        # positive_parsed_data = [d for d in positive_parsed_data if d not in test_positive_samples]
-        # negative_parsed_data = [d for d in negative_parsed_data if d not in test_negative_samples]
-
-        train_parsed_data.extend(positive_parsed_data)
-        train_parsed_data.extend(negative_parsed_data)
-
-        # 打印数据统计信息
-        print(f"📊 Positive samples: {len(positive_parsed_data)}")
-        print(f"📊 Negative samples: {len(negative_parsed_data)}")
-        print(f"📊 Test samples: {len(test_parsed_data)}")
-
-        random.shuffle(train_parsed_data)
-        # random.shuffle(test_parsed_data)
-
+        random.shuffle(parsed_data)
         if partition == "train_no_safety.jsonl":
-            self.ann = train_parsed_data
+            self.ann = parsed_data
         elif partition == "test_no_safety.jsonl":
             self.ann = test_parsed_data
         else:
@@ -86,6 +88,43 @@ class InstructionDataset(Dataset):
 
     def __len__(self):
         return len(self.ann)
+
+    # def __getitem__(self, index):
+    #     IGNORE_INDEX = -100  # The default setting in CrossEntropyLoss
+
+    #     ann = self.ann[index]
+    #     prompt = B_INST + " " + prompt_template.format(ann["conversations"][0]) + " " + E_INST
+    #     example = prompt + " " + ann["conversations"][1] + " "
+    #     prompt = self.tokenizer.encode(prompt)
+    #     prompt.insert(0, self.tokenizer.cls_token_id) 
+    #     prompt = torch.tensor(
+    #         prompt, dtype=torch.int64
+    #     )
+
+    #     example = self.tokenizer.encode(example)
+    #     example.append(self.tokenizer.eos_token_id)
+    #     example.insert(0, self.tokenizer.cls_token_id)
+    #     example = torch.tensor(
+    #         example, dtype=torch.int64
+    #     )
+        
+    #     padding = self.max_tokens - example.shape[0]
+    #     if padding < 0:
+    #         example = example[: self.max_tokens]
+
+    #     labels = copy.deepcopy(example)
+    #     labels[: len(prompt)] = -1
+    #     example_mask = example.ge(0)
+    #     label_mask = labels.ge(0)
+    #     example[~example_mask] = 0
+    #     labels[~label_mask] = IGNORE_INDEX
+    #     labels[0] = ann["label"]
+
+    #     return {
+    #         "input_ids": example.tolist(),
+    #         "labels": labels.tolist(),
+    #         "attention_mask":example_mask.tolist(),
+    #     }
 
     def __getitem__(self, index):
         IGNORE_INDEX = -100  # The default setting in CrossEntropyLoss
@@ -125,9 +164,9 @@ class InstructionDataset(Dataset):
 
         # Find `conversations[1]` start and end indices in `input_ids`
         start_idx_output = len(prompt_tokens)
-        if ann["label"] == 1:
+        if ann["label"] == 0:
             end_idx_output = start_idx_output + len(conversation_1_tokens) - 1
-        else:  # If label is 0, make end_idx_output equal to start_idx_output
+        else:  # If label is 1, make end_idx_output equal to start_idx_output
             end_idx_output = start_idx_output
 
         # Generate attention and label masks
@@ -145,3 +184,4 @@ class InstructionDataset(Dataset):
             "attention_mask": example_mask.tolist(),
             "positions": positions  # Packed position indices
         }
+

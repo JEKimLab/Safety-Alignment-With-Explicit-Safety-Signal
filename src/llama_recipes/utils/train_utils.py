@@ -554,7 +554,6 @@ def print_model_size(model, config, rank: int = 0) -> None:
 def get_policies(cfg, rank, is_mistral):
     """Get the policies for mixed precision and fsdp wrapping"""
 
-
     verify_bfloat_support = ((
     torch.version.cuda
     and torch.cuda.is_bf16_supported()

@@ -21,9 +21,6 @@ class LengthBasedBatchSampler(torch.utils.data.BatchSampler):
 
     def __iter__(self):
         ids = np.argsort(self.lengths, kind='mergesort')
-        # ids = np.arange(len(self.lengths))
-        # random.shuffle(ids)
-            
         if self.drop_last:
             ids = ids[:len(ids) // self.batch_size * self.batch_size]
 
@@ -98,8 +95,8 @@ class LengthBasedOverSamplingBatchSampler(torch.utils.data.BatchSampler):
 class DistributedLengthBasedBatchSampler(torch.utils.data.BatchSampler):
     def __init__(self, data_source, batch_size: int, num_replicas: int, rank: int, shuffle: bool = True, seed: int = 0) -> None:
         random.seed(seed)
-        # self.batch_sampler = LengthBasedBatchSampler(
-        self.batch_sampler = LengthBasedOverSamplingBatchSampler(
+        self.batch_sampler = LengthBasedBatchSampler(
+        # self.batch_sampler = LengthBasedOverSamplingBatchSampler(
             data_source, batch_size=batch_size, drop_last=True, shuffle=shuffle
             )
         self.num_replicas = num_replicas
