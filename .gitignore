@@ -7,7 +7,7 @@ local_model_hub/
 model_checkpoints/
 recipes/
 
-eval/
+# eval/
 # scripts/
 misc/
 
