@@ -17,7 +17,7 @@ Please follow instructions in [REARME_base.md](https://github.com/JEKimLab/Safet
 
 > Transformers commit id: f51ac9e059a78049362803c1d606a2c6a8160ee4
 
-1. Please replace files in /src/llama_recipes/models/symlink/* with Transformers' files (Uzip /src/llama_recipes/models/symlink/replace.zip fist).
+1. Please replace files in /src/llama_recipes/models/symlink/* with Transformers' files (Uzip /src/llama_recipes/models/symlink/replace.zip first).
 
 - utils.py -> src/transfromers/generation/utils.py
 - modeling_llama.py -> src/transformers/models/llama/modeling_llama.py
