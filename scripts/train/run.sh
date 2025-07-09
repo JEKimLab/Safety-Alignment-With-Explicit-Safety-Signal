@@ -1,0 +1,14 @@
+torchrun --nnodes 1 --nproc_per_node 3 finetuning.py \
+    --batch_size_training 4 --lr 2e-5 \
+    --gradient_accumulation_steps 6 \
+    --weight_decay 0.1 \
+    --num_epochs 1 \
+    --context_length 2048 \
+    --dataset lima_dataset \
+    --enable_fsdp \
+    --model_name meta-llama/Llama-2-7b-hf \
+    --save_model \
+    --dist_checkpoint_root_folder model_checkpoints \
+    --dist_checkpoint_folder fine-tuned-with-cls \
+    --fsdp_config.pure_bf16 \
+    --batching_strategy padding

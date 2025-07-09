@@ -96,7 +96,7 @@ def main(
     model_id: str=None,
     peft_model: str=None,
     quantization: bool=False,
-    max_new_tokens = 1024, #The maximum numbers of tokens to generate
+    max_new_tokens = 512, #The maximum numbers of tokens to generate
     prompt_file: str='utility_evaluation/mt_bench/data/question.jsonl',
     prompt_template_style: str='base',
     seed: int=42, #seed value for reproducibility
@@ -145,6 +145,7 @@ def main(
         
     if model_id is None:
         model_id = model_name.split("/")[-1]
+
     if output_file is None:
         output_file = f"utility_evaluation/mt_bench/data/model_answer/{model_id}.jsonl"
     
@@ -174,8 +175,8 @@ def main(
     os.environ['strategic_decoding_strategy'] = "True"
     os.environ['strategic_attention_mechanism'] = "True"
     os.environ['dynamic_reclassification_strategy'] = "each"
-    os.environ['consucultive_unsafe_tao'] = "3"
-    os.environ['cls_logit_boundary'] = "0.5"
+    os.environ['consucultive_unsafe_tao'] = "5"
+    os.environ['cls_logit_boundary'] = "0.75"
     os.environ['r1'] = "5" 
     os.environ['r2'] = "15"
     os.environ['r3'] = "10"
@@ -273,7 +274,7 @@ def main(
             
             outputs = model.generate(
                 input_ids = input_ids2,
-                positions=positions2,
+                positions=positions,
                 max_new_tokens=max_new_tokens,
                 do_sample=do_sample,
                 temperature=temperature,

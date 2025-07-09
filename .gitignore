@@ -8,15 +8,15 @@ model_checkpoints/
 recipes/
 
 eval/
-scripts/
+# scripts/
 misc/
 
-safety_evaluation/question_outputs/
-safety_evaluation/gpt4_eval_output/
+# safety_evaluation/question_outputs/
+# safety_evaluation/gpt4_eval_output/
 
 utility_evaluation/alpacaeval/
 utility_evaluation/mt_bench/data/model_answer/
-utility_evaluation/mt_bench/data/model_judgment
+# utility_evaluation/mt_bench/data/model_judgment
 
 src/llama_recipes/models/hf_gpt2/
 src/llama_recipes/models/hf_llama2/
