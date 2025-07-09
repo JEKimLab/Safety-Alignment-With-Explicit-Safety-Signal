@@ -11,7 +11,7 @@ Please follow instructions in [REARME_base.md](https://github.com/JEKimLab/Safet
 ## Update News
 
 - 2025-07-09 Add data and scripts
-- 2025-05-07 Intiate the repo
+- 2025-05-07 Initiate the repo
 
 ## Prepare Instructions
 
