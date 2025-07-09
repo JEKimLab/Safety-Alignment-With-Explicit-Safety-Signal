@@ -1,4 +1,6 @@
-# Safety-Alignment-With-Explicit-Safety-Signal
+# Safety Alignment Can Be Not Superficial With Explicit Safety Signals [ICML 2025]
+
+This is the official implementation for the paper "Safety Alignment Can Be Not Superficial With Explicit Safety Signals", which has been accepted by ICML 2025.
 
 ⚠️ Due to time constraints during my summer internship, the code is being organized and uploaded gradually, and will be fully available before the conference.
 
@@ -8,13 +10,14 @@ Please follow instructions in [REARME_base.md](https://github.com/JEKimLab/Safet
 
 ## Update News
 
+- 2025-07-09 Add data and scripts
 - 2025-05-07 Intiate the repo
 
 ## Prepare Instructions
 
 > Transformers commit id: f51ac9e059a78049362803c1d606a2c6a8160ee4
 
-1. Please replace files in /src/llama_recipes/models/symlink/* with Transformers' files.
+1. Please replace files in /src/llama_recipes/models/symlink/* with Transformers' files (Uzip /src/llama_recipes/models/symlink/replace.zip fist).
 
 - utils.py -> src/transfromers/generation/utils.py
 - modeling_llama.py -> src/transformers/models/llama/modeling_llama.py
@@ -62,7 +65,11 @@ Please follow instructions in [REARME_base.md](https://github.com/JEKimLab/Safet
 
 ### Training Instruction
 
-> Please check the scripts folder (Updating)
+> Please check the scripts folder
+
+### Safety Evaluation Instruction
+
+> Please check the scripts folder
 
 ### Utility Evaluation Instruction
 
@@ -70,8 +77,14 @@ Please follow instructions in [REARME_base.md](https://github.com/JEKimLab/Safet
 
 > For perplexicy and mt-bench score, please check the scripts folder
 
-### Safety Evaluation Instruction
+### Citation
 
-> Please check the scripts folder (Updating)
-
+```
+@article{li2025safety,
+  title={Safety alignment can be not superficial with explicit safety signals},
+  author={Li, Jianwei and Kim, Jung-Eng},
+  journal={arXiv preprint arXiv:2505.17072},
+  year={2025}
+}
+```
 
