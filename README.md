@@ -63,6 +63,9 @@ Please follow instructions in [REARME_base.md](https://github.com/JEKimLab/Safet
         self.set_output_embeddings(new_lm_head)
     ```
 
+4. Please check the file "src/llama_recipes/datasets/lima_dataset/lima_dataset.py" for data details.
+
+
 ### Training Instruction
 
 > Please check the scripts folder
