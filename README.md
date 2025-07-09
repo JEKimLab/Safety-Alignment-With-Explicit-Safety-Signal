@@ -80,6 +80,13 @@ Please follow instructions in [REARME_base.md](https://github.com/JEKimLab/Safet
 ### Citation
 
 ```
+@article{li2024superficial,
+  title={Superficial safety alignment hypothesis},
+  author={Li, Jianwei and Kim, Jung-Eun},
+  journal={arXiv preprint arXiv:2410.10862},
+  year={2024}
+}
+
 @article{li2025safety,
   title={Safety alignment can be not superficial with explicit safety signals},
   author={Li, Jianwei and Kim, Jung-Eng},
