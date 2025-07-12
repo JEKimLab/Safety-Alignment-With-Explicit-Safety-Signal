@@ -10,6 +10,7 @@ Please follow instructions in [REARME_base.md](https://github.com/JEKimLab/Safet
 
 ## Update News
 
+- 2025-07-12 Update Readme
 - 2025-07-09 Add data and scripts
 - 2025-05-07 Initiate the repo
 
@@ -66,7 +67,7 @@ Please follow instructions in [REARME_base.md](https://github.com/JEKimLab/Safet
 4. Please check the file "src/llama_recipes/datasets/lima_dataset/lima_dataset.py" for data details.
 
 
-### Training Instruction
+## Training Instruction
 
 ```
 bash scripts/train/run.sh
@@ -75,7 +76,7 @@ bash scripts/train/run.sh
 bash scripts/convert/run.sh 
 ```
 
-### Safety Evaluation Instruction
+## Safety Evaluation Instruction
 
 ```
 # Please check the scripts folder
@@ -83,17 +84,17 @@ bash scripts/convert/run.sh
 
 bash scripts/eval/generation/adv_prefill.sh
 bash scripts/eval/evaluation/zeval_adv_prefill.sh
-# Please change the path of log file to your path
+# Please change the log file path to your own path.
 bash scripts/eval/reevaluation/adv_prefill.sh
 ```
 
-### Utility Evaluation Instruction
+## Utility Evaluation Instruction
 
 > Please use [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) for utility evaluation, commit id `3823cfec41c016378acbcc8616dd1ac92c15edd4`
 
 > For perplexicy and mt-bench score, please check the scripts folder
 
-### Citation
+## Citation
 
 ```
 @article{li2024superficial,
