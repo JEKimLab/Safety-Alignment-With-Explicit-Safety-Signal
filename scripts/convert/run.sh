@@ -1,3 +1,6 @@
+
+#  Please note that HF_model_path_or_name should point to a valid model augmented with a CLS head.
+
 python src/llama_recipes/inference/checkpoint_converter_fsdp_hf.py \
     -fsdp_checkpoint_path "model_checkpoints/fine-tuned-with-cls-meta-llama/Llama-2-7b-hf" \
     -consolidated_model_path "model_checkpoints/fine-tuned-with-cls-meta-llama/Llama-2-7b-cls" \

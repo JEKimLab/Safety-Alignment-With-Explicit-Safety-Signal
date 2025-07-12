@@ -2,7 +2,7 @@
 
 This is the official implementation for the paper "Safety Alignment Can Be Not Superficial With Explicit Safety Signals", which has been accepted by ICML 2025.
 
-⚠️ Due to time constraints during my summer internship, the code is being organized and uploaded gradually, and will be fully available before the conference.
+<!-- ⚠️ Due to time constraints during my summer internship, the code is being organized and uploaded gradually, and will be fully available before the conference. -->
 
 ## Dependencies Requirement
 
@@ -68,11 +68,24 @@ Please follow instructions in [REARME_base.md](https://github.com/JEKimLab/Safet
 
 ### Training Instruction
 
-> Please check the scripts folder
+```
+bash scripts/train/run.sh
+
+# Please note that HF_model_path_or_name should point to a valid model augmented with a CLS head.
+bash scripts/convert/run.sh 
+```
 
 ### Safety Evaluation Instruction
 
-> Please check the scripts folder
+```
+# Please check the scripts folder
+# Example
+
+bash scripts/eval/generation/adv_prefill.sh
+bash scripts/eval/evaluation/zeval_adv_prefill.sh
+# Please change the path of log file to your path
+bash scripts/eval/reevaluation/adv_prefill.sh
+```
 
 ### Utility Evaluation Instruction
 
